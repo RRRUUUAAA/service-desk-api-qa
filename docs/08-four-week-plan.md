@@ -103,6 +103,7 @@ sed -n '1,2p' reports/junit.xml
 
 未解决问题：
 
-- GitHub Actions 需要 push 到 GitHub 后才产生首次线上运行记录。
 - 当前环境没有做服务端代码覆盖率插桩，不能写覆盖率百分比。
 - 并发、性能和专业安全测试不在本项目范围。
+
+GitHub Actions 首次运行发现 BuildKit `network.host` 权限问题，修复后第二次运行成功，JUnit artifact 已上传。

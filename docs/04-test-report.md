@@ -108,6 +108,20 @@ SELECT
 
 修复后本地回归：`95 passed in 4.33s`。
 
+### 第五轮：GitHub Actions 成功
+
+修复后的 CI 运行：
+
+```text
+Start API and PostgreSQL  success
+Run pytest               success
+Upload JUnit report      success
+```
+
+artifact `junit-report` 已成功上传，大小 1.87 KB。运行记录：
+
+[GitHub Actions run 45557328002](https://github.com/RRRUUUAAA/service-desk-api-qa/actions/runs/45557328002)
+
 ## 6. 覆盖矩阵
 
 | 风险区域 | 覆盖 |
@@ -123,13 +137,12 @@ SELECT
 | 数据库字段和审计事件 | 已覆盖 |
 | 失败操作回滚 | 已覆盖 |
 | 数据清理 | 已覆盖 |
-| CI/JUnit | 已配置，本地报告已验证 |
+| CI/JUnit | GitHub Actions 成功，JUnit artifact 已上传 |
 
 ## 7. 未覆盖与残余风险
 
 - 未测试并发分配或并发状态更新。
 - 未测试性能和容量。
 - 未做真实第三方服务异常。
-- GitHub Actions 工作流已提交，但本轮本地执行不等同于线上 CI 运行证明；首次 push 后仍需查看 Actions 结果。
-- 首次 GitHub Actions 运行发现 `build.network: host` 需要 BuildKit 特权；已在 CI 中切换为 `default` 网络，待重新执行确认。
+- GitHub Actions 首次运行发现 `build.network: host` 需要 BuildKit 特权；已切换为 `default` 网络并完成成功回归。
 - 自建靶场仅用于测试能力展示，不能表达真实生产流量。

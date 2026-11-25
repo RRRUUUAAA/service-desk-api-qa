@@ -1,5 +1,7 @@
 # Service Desk API QA
 
+[![API test suite](https://github.com/RRRUUUAAA/service-desk-api-qa/actions/workflows/tests.yml/badge.svg)](https://github.com/RRRUUUAAA/service-desk-api-qa/actions/workflows/tests.yml)
+
 一个面向入门级软件测试/测试开发岗位的完整接口自动化项目。被测对象是一个小型 IT 工单 REST API，测试项目使用 Python、pytest、requests、PostgreSQL 和 Docker Compose，覆盖鉴权、角色权限、分页筛选、业务状态机、异常输入和数据库一致性。
 
 > 边界说明：被测 API 是为测试工程展示而自建的本地靶场，不是生产系统。项目重点是需求分析、测试设计、自动化框架、数据库校验、缺陷闭环和 CI，而不是包装接口的业务复杂度。
@@ -13,6 +15,7 @@
 - 最终锁文件冷重建：`95 passed in 5.02s`
 - 当前提交版本最终重建：`95 passed in 7.74s`
 - CI 网络配置修复后本地回归：`95 passed in 4.33s`
+- GitHub Actions：成功，JUnit artifact 已上传
 - JUnit：`tests=95 failures=0 errors=0 skipped=0`
 - 测试后数据库：`users=1`（bootstrap admin）、`tickets=0`、`ticket_events=0`
 
@@ -195,6 +198,8 @@ GitHub Actions 工作流位于 [.github/workflows/tests.yml](.github/workflows/t
 5. 上传 `reports/junit.xml`。
 6. 失败时输出容器日志。
 7. 无论成功失败都清理容器和测试数据卷。
+
+首次真实运行记录：[Actions run 45557328002](https://github.com/RRRUUUAAA/service-desk-api-qa/actions/runs/45557328002)
 
 ## 覆盖率说明
 
