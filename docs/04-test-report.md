@@ -19,12 +19,12 @@
 | 失败 | 0 |
 | 错误 | 0 |
 | 跳过 | 0 |
-| 当前提交版本最终重建耗时 | 7.74s |
+| CI 网络配置修复后本地回归耗时 | 4.33s |
 
 JUnit 文件：[reports/junit.xml](../reports/junit.xml)
 
 ```text
-tests="95" failures="0" errors="0" skipped="0" time="7.743"
+tests="95" failures="0" errors="0" skipped="0" time="4.325"
 ```
 
 ## 3. 稳定性
@@ -36,6 +36,7 @@ tests="95" failures="0" errors="0" skipped="0" time="7.743"
 | 3 | 95 passed | 5.84s |
 | 最终锁文件冷重建 | 95 passed | 5.02s |
 | 当前提交版本最终重建 | 95 passed | 7.74s |
+| CI 网络配置修复后本地回归 | 95 passed | 4.33s |
 
 三次执行均使用同一数据库卷，没有重启或清空数据库，说明唯一数据与 teardown 可以支持重复执行。
 
@@ -93,6 +94,20 @@ SELECT
 
 最终完整套件：连续三次 `95 passed`；使用锁定依赖和固定镜像 digest 冷重建后再次 `95 passed in 5.02s`；EOF 规范化后的当前待提交版本再次执行 `95 passed in 7.74s`。
 
+### 第四轮：首次 GitHub Actions 失败
+
+结果：`Start API and PostgreSQL` 在 10 秒内失败。
+
+原因：Compose 的 `build.network: host` 需要 BuildKit `network.host` 特权，GitHub runner 拒绝授予；镜像拉取和测试代码本身没有执行到。
+
+处理：
+
+- 本地继续默认使用 `BUILD_NETWORK=host`。
+- CI 显式设置 `BUILD_NETWORK=default`。
+- CI 在运行测试前删除仓库中已有的 JUnit，防止测试被跳过时上传旧报告。
+
+修复后本地回归：`95 passed in 4.33s`。
+
 ## 6. 覆盖矩阵
 
 | 风险区域 | 覆盖 |
@@ -116,4 +131,5 @@ SELECT
 - 未测试性能和容量。
 - 未做真实第三方服务异常。
 - GitHub Actions 工作流已提交，但本轮本地执行不等同于线上 CI 运行证明；首次 push 后仍需查看 Actions 结果。
+- 首次 GitHub Actions 运行发现 `build.network: host` 需要 BuildKit 特权；已在 CI 中切换为 `default` 网络，待重新执行确认。
 - 自建靶场仅用于测试能力展示，不能表达真实生产流量。

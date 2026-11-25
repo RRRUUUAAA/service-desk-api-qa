@@ -20,7 +20,7 @@ services:
   api:
     build:
       context: .
-      network: host
+      network: ${BUILD_NETWORK:-host}
       args:
         PIP_INDEX_URL: ${PIP_INDEX_URL:-https://mirrors.aliyun.com/pypi/simple}
     command: uvicorn app.main:app --host 0.0.0.0 --port 8000
@@ -52,7 +52,7 @@ services:
     profiles: ["test"]
     build:
       context: .
-      network: host
+      network: ${BUILD_NETWORK:-host}
       args:
         PIP_INDEX_URL: ${PIP_INDEX_URL:-https://mirrors.aliyun.com/pypi/simple}
     command: pytest

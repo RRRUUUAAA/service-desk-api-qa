@@ -12,6 +12,7 @@
 - 执行耗时：5.62s、5.47s、5.84s
 - 最终锁文件冷重建：`95 passed in 5.02s`
 - 当前提交版本最终重建：`95 passed in 7.74s`
+- CI 网络配置修复后本地回归：`95 passed in 4.33s`
 - JUnit：`tests=95 failures=0 errors=0 skipped=0`
 - 测试后数据库：`users=1`（bootstrap admin）、`tickets=0`、`ticket_events=0`
 

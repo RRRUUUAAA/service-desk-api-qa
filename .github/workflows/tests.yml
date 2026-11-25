@@ -8,6 +8,8 @@ on:
 
 env:
   PIP_INDEX_URL: https://pypi.org/simple
+  BUILD_NETWORK: default
+  COMPOSE_PROGRESS: plain
 
 jobs:
   api-tests:
@@ -21,8 +23,13 @@ jobs:
       - name: Validate Compose configuration
         run: docker compose config
 
+      - name: Remove stale reports
+        run: |
+          mkdir -p reports
+          find reports -mindepth 1 -maxdepth 1 -type f -delete
+
       - name: Start API and PostgreSQL
-        run: docker compose up -d --build db api
+        run: docker compose up -d --build --wait --wait-timeout 180 db api
 
       - name: Run pytest
         run: docker compose --profile test run --rm tests
